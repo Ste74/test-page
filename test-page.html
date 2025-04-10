@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista Prodotti Amway</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product h2 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    .product a {
+      color: #0076BE;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .product a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Prodotti Consigliati Amway</h1>
+  <div id="product-list"></div>
+
+  <script>
+    const productsDB = {
+      "125167": "Nutrilite™ Daily",
+      // "4298": "Nutrilite™ Omega 3 Complex",
+      // "109741": "Nutrilite™ Vitamina C Plus"
+      // Puoi aggiungere altri codici qui
+    };
+
+    const container = document.getElementById("product-list");
+    const urlParams = new URLSearchParams(window.location.search);
+    const codes = urlParams.get("prod")?.split(",") || [];
+
+    if (codes.length === 0) {
+      container.innerHTML = '<p>Nessun prodotto selezionato. Aggiungi ?prod=COD1,COD2 al link.</p>';
+    } else {
+      codes.forEach(code => {
+        const name = productsDB[code] || `Prodotto codice ${code}`;
+        const url = `https://www.amway.it/${name.replace(/ /g, "-")}/p/${code}`;
+        const html = `
+          <div class="product">
+            <h2>${name}</h2>
+            <p><a href="${url}" target="_blank">Acquista ora</a></p>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+    }
+  </script>
+</body>
+</html>
